@@ -3,13 +3,19 @@ package org.humingk.movie.controller;
 import org.humingk.movie.common.AddSession;
 import org.humingk.movie.common.MovieAll;
 import org.humingk.movie.common.Result;
+import org.humingk.movie.common.resource.AbstractMovieResourceAdapter;
+import org.humingk.movie.common.resource.pojo.MovieAllResource;
+import org.humingk.movie.common.resource.pojo.MovieMap;
 import org.humingk.movie.service.MovieService;
+import org.humingk.movie.service.ResourceService;
 import org.humingk.movie.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -23,6 +29,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ResourceService resourceService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,7 +63,7 @@ public class MovieController {
                 return Result.createMessage(200, "fail", null);
             }
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
             return null;
         }
     }
@@ -82,53 +90,47 @@ public class MovieController {
         }
     }
 
-//    /**
-//     * 获取Btbtdy资源信息
-//     *
-//     * @param keyword
-//     * @return
-//     */
-//    @RequestMapping(value = "getBtbtdyResource", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Result getBtbtdyResource(@RequestParam("keyword") String keyword) {
-//        try {
-//            ResourceBtbtdy resourceBtbtdy = new ResourceBtbtdy();
-//            List<BtbtdyResource> btbtdyResources = resourceBtbtdy.getResource(keyword, 1);
-//            if (btbtdyResources != null && btbtdyResources.size() != 0) {
-//                logger.info("(BT电影天堂)获取电影资源信息成功,共计 " + btbtdyResources.size() + " 个电影...keyword: " + keyword);
-//                return Result.createMessage(200, "success", btbtdyResources);
-//            } else {
-//                logger.info("(BT电影天堂)获取电影资源信息失败...keyword: " + keyword);
-//            }
-//        } catch (Exception e) {
-//            logger.error("",e);
-//        }
-//        return Result.createMessage(200, "fail", null);
-//    }
-//
-//    /**
-//     * 获取 Loldytt 电影资源信息
-//     *
-//     * @param keyword
-//     * @return
-//     */
-//    @RequestMapping(value = "getLoldyttResource", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Result getLoldyttResource(@RequestParam("keyword") String keyword) {
-//        try {
-//            ResourceLoldytt resourceLoldytt = new ResourceLoldytt();
-//            List<LoldyttResource> loldyttResources = resourceLoldytt.getResource(keyword, 1);
-//            if (loldyttResources != null && loldyttResources.size() != 0) {
-//                logger.info("(LOL电影天堂)获取电影资源信息成功,共计 " + loldyttResources.size() + " 个电影...keyword: " + keyword);
-//                return Result.createMessage(200, "success", loldyttResources);
-//            }else {
-//                logger.info("(LOL电影天堂)获取电影资源信息失败...keyword: " + keyword);
-//            }
-//        } catch (Exception e) {
-//            logger.error("",e);
-//        }
-//        return Result.createMessage(200, "fail", null);
-//    }
+
+    /**
+     * 通过关键字获取电影资源:电影表列表/电影资源
+     *
+     * @param keyword     搜索关键字
+     * @param requestType 请求类型
+     *                    0 电影表列表
+     *                    1 电影资源
+     * @param dateType    电影上映时间类型
+     *                    0 新电影始终请求电影表列表和电影资源---搜索后列表搜索标记记为未搜索，资源搜索标志记为未搜索
+     *                    1 未知时间电影有选择请求电影表列表，始终请求电影资源---搜索后列表搜索标记记为已搜索，资源搜索标记记为未搜索
+     *                    2 老电影有选择请求电影列表列表和电影资源---搜索后列表搜索标记记为已搜索，资源搜索标记记为已搜索
+     * @return
+     */
+    @RequestMapping(value = "getResource", method = RequestMethod.GET)
+    @ResponseBody
+    public Result getResource(
+            @RequestParam("keyword") String keyword,
+            @RequestParam("requestType") int requestType,
+            @RequestParam("dateType") int dateType) {
+        try {
+            // 请求电影表列表
+            if (requestType == 0) {
+                List<MovieMap<? extends AbstractMovieResourceAdapter>> movieMapList =
+                        resourceService.getResourceMapList(keyword, dateType, 3, 5);
+                if (movieMapList != null) {
+                    return Result.createMessage(200, "success", movieMapList);
+                }
+            }
+            // 请求电影资源
+            else if (requestType == 1) {
+                MovieAllResource movieAllResource = resourceService.getMovieAllResource(keyword, dateType, 10);
+                if (movieAllResource != null) {
+                    return Result.createMessage(200, "success", movieAllResource);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+        return Result.createMessage(200, "fail", null);
+    }
 
     /**
      * 更新数据库电影评分

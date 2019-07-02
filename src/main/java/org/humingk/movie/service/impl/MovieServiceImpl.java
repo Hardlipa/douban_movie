@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MovieMapper movieMapper;
@@ -68,7 +68,7 @@ public class MovieServiceImpl implements MovieService {
             movieAll.setReleasetimes(releasetimeMapper.selectReleasetimesOfMovieById(movieId));
             return movieAll;
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
         }
         return null;
     }
@@ -83,9 +83,9 @@ public class MovieServiceImpl implements MovieService {
      * @return
      */
     @Override
-    public List<MovieAll> getMovieAllsOfMovieByAlias(String s,int start,int count) {
+    public List<MovieAll> getMovieAllsOfMovieByAlias(String s, int start, int count) {
         try {
-            List<Movie> movies = movieMapper.selectMoviesByAlias(s,start,count);
+            List<Movie> movies = movieMapper.selectMoviesByAlias(s, start, count);
             if (movies != null) {
                 List<MovieAll> movieAlls = new ArrayList<>();
                 for (Movie movie : movies) {
@@ -104,7 +104,7 @@ public class MovieServiceImpl implements MovieService {
                 return movieAlls;
             }
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
         }
         return null;
     }
@@ -126,7 +126,7 @@ public class MovieServiceImpl implements MovieService {
             }
             return movies;
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
         }
         return null;
     }
@@ -143,7 +143,7 @@ public class MovieServiceImpl implements MovieService {
             movieMapper.updateRateByPrimaryKey(movieId, rate);
             return true;
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
             return false;
         }
     }
@@ -161,7 +161,7 @@ public class MovieServiceImpl implements MovieService {
             movieMapper.updateImdbIdByPrimaryKey(movieId, imdbId);
             return true;
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
             return false;
         }
     }
@@ -228,7 +228,7 @@ public class MovieServiceImpl implements MovieService {
             }
             return true;
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("", e);
         }
         return false;
     }

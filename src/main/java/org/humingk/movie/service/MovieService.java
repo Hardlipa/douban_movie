@@ -1,7 +1,7 @@
 package org.humingk.movie.service;
 
-import org.humingk.movie.entity.Movie;
 import org.humingk.movie.common.MovieAll;
+import org.humingk.movie.entity.Movie;
 
 import java.util.List;
 
@@ -26,10 +26,11 @@ public interface MovieService {
      * @param count
      * @return
      */
-    List<MovieAll> getMovieAllsOfMovieByAlias(String s,int start,int count);
+    List<MovieAll> getMovieAllsOfMovieByAlias(String s, int start, int count);
 
     /**
      * 根据电影名称开头的字符串找出所有电影的基本资料
+     *
      * @param s
      * @return
      */
@@ -38,10 +39,11 @@ public interface MovieService {
 
     /**
      * 更新电影评分
+     *
      * @param movieId
      * @param rate
      */
-    boolean updateRateByMovieId(int movieId,float rate);
+    boolean updateRateByMovieId(int movieId, float rate);
 
     /**
      * 更新imdbId
@@ -50,14 +52,16 @@ public interface MovieService {
      * @param imdbId
      * @return
      */
-    boolean updateImdbIdByMovieId(int movieId,String imdbId);
+    boolean updateImdbIdByMovieId(int movieId, String imdbId);
 
 
     /**
      * 向数据库添加movieAll
+     *
      * @param movieAll
      * @return
      */
     Boolean addMovieAll(MovieAll movieAll);
+
 }
 

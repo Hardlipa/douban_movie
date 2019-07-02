@@ -1,9 +1,9 @@
 package org.humingk.movie.entity;
 
-public class Resource {
+public class ResourceResourcelist {
     private String resourceUrl;
 
-    private String resourceName;
+    private Integer resourcelistId;
 
     public String getResourceUrl() {
         return resourceUrl;
@@ -13,11 +13,11 @@ public class Resource {
         this.resourceUrl = resourceUrl == null ? null : resourceUrl.trim();
     }
 
-    public String getResourceName() {
-        return resourceName;
+    public Integer getResourcelistId() {
+        return resourcelistId;
     }
 
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName == null ? null : resourceName.trim();
+    public void setResourcelistId(Integer resourcelistId) {
+        this.resourcelistId = resourcelistId;
     }
 }

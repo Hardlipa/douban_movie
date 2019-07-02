@@ -2,43 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.humingk.movie.mapper.ResourceMapper">
   <resultMap id="BaseResultMap" type="org.humingk.movie.entity.Resource">
-    <id column="resource_id" jdbcType="INTEGER" property="resourceId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="quality" jdbcType="INTEGER" property="quality" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="url" jdbcType="CHAR" property="url" />
-    <result column="movie_name" jdbcType="CHAR" property="movieName" />
-    <result column="director_name" jdbcType="CHAR" property="directorName" />
+    <id column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
+    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from resource
-    where resource_id = #{resourceId,jdbcType=INTEGER}
+    where resource_url = #{resourceUrl,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="org.humingk.movie.entity.Resource">
-    insert into resource (resource_id, name, quality, 
-      content, url, movie_name, 
-      director_name)
-    values (#{resourceId,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{quality,jdbcType=INTEGER}, 
-      #{content,jdbcType=VARCHAR}, #{url,jdbcType=CHAR}, #{movieName,jdbcType=CHAR}, 
-      #{directorName,jdbcType=CHAR})
+    insert into resource (resource_url, resource_name)
+    values (#{resourceUrl,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="org.humingk.movie.entity.Resource">
     update resource
-    set name = #{name,jdbcType=CHAR},
-      quality = #{quality,jdbcType=INTEGER},
-      content = #{content,jdbcType=VARCHAR},
-      url = #{url,jdbcType=CHAR},
-      movie_name = #{movieName,jdbcType=CHAR},
-      director_name = #{directorName,jdbcType=CHAR}
-    where resource_id = #{resourceId,jdbcType=INTEGER}
+    set resource_name = #{resourceName,jdbcType=VARCHAR}
+    where resource_url = #{resourceUrl,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select resource_id, name, quality, content, url, movie_name, director_name
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select resource_url, resource_name
     from resource
-    where resource_id = #{resourceId,jdbcType=INTEGER}
+    where resource_url = #{resourceUrl,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select resource_id, name, quality, content, url, movie_name, director_name
+    select resource_url, resource_name
     from resource
   </select>
 </mapper>
